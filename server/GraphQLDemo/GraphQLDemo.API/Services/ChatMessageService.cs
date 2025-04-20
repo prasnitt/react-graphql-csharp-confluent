@@ -1,4 +1,4 @@
-﻿using GraphQLDemo.API.Schema;
+﻿using GraphQLDemo.API.Dto;
 
 namespace GraphQLDemo.API.Services;
 

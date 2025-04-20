@@ -1,7 +1,14 @@
+using Confluent.Kafka;
+using Confluent.SchemaRegistry;
+using Confluent.SchemaRegistry.Serdes;
+using GraphQLDemo.API.Dto;
 using GraphQLDemo.API.Schema;
 using GraphQLDemo.API.Services;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHealthChecks();
 
 builder.Services.AddGraphQLServer()
     .AddQueryType<Query>()
@@ -10,12 +17,33 @@ builder.Services.AddGraphQLServer()
 // Register the chat message service
 builder.Services.AddSingleton<IChatMessageService, ChatMessageService>();
 
+builder.Services.Configure<ProducerConfig>(builder.Configuration.GetSection("Producer"));
+builder.Services.Configure<SchemaRegistryConfig>(builder.Configuration.GetSection("SchemaRegistry"));
+
+builder.Services.AddSingleton<ISchemaRegistryClient>(sp =>
+{
+    var config = sp.GetRequiredService<IOptions<SchemaRegistryConfig>>();
+    return new CachedSchemaRegistryClient(config.Value);
+});
+
+builder.Services.AddSingleton<IProducer<String, ChatMessage>>(sp =>
+{
+    var config = sp.GetRequiredService<IOptions<ProducerConfig>>();
+    var schemaRegistryClient = sp.GetRequiredService<ISchemaRegistryClient>();
+
+    // Debugging
+    //config.Value.Debug = "all";
+
+    return new ProducerBuilder<String, ChatMessage>(config.Value)
+        .SetValueSerializer(new JsonSerializer<ChatMessage>(schemaRegistryClient))
+        .Build();
+});
+
 
 var app = builder.Build();
 
-//app.MapGet("/", () => "Hello World!");
-
 app.UseRouting();
+app.UseHealthChecks("/healthy");
 app.MapGraphQL();
 
 

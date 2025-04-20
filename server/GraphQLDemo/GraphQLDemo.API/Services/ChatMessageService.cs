@@ -1,6 +1,9 @@
 ﻿using GraphQLDemo.API.Dto;
+using System.Collections.Concurrent;
 
 namespace GraphQLDemo.API.Services;
+
+//  TODO use Async/Await
 
 // Add interface for chat message service
 public interface IChatMessageService
@@ -9,21 +12,22 @@ public interface IChatMessageService
 
     ChatMessage GetMessage(string id);
 
-    void AddMessage(ChatMessage message);
+    string AddMessage(string sender, string content);
     void ClearMessages();
 }
 
 
 public class ChatMessageService : IChatMessageService
 {
+    // ConcurrentBag is thread-safe and allows for concurrent access
     private readonly ConcurrentBag<ChatMessage> _messages = new();
 
     public ChatMessageService()
     {
-        // Seed some initial messages
-        _messages.Add(new ChatMessage("Alice", "Hello, world!"));
-        _messages.Add(new ChatMessage("Bob", "Hi, Alice! How are you?"));
-        _messages.Add(new ChatMessage("Alice", "I'm good, thanks!"));
+        // use AddMessage method to add messages
+        AddMessage("Alice", "Hello, world!");
+        AddMessage("Bob", "Hi, Alice! How are you?");
+        AddMessage("Alice", "I'm good, thanks!");
     }
 
     public IEnumerable<ChatMessage> GetMessages()
@@ -36,9 +40,11 @@ public class ChatMessageService : IChatMessageService
         return _messages.FirstOrDefault(m => m.Id == id);
     }
 
-    public void AddMessage(ChatMessage message)
+    public string AddMessage(string sender, string content)
     {
+        var message = new ChatMessage(sender, content);
         _messages.Add(message);
+        return message.Id;
     }
 
     public void ClearMessages()

@@ -16,7 +16,7 @@ public interface IChatMessageService
 
 public class ChatMessageService : IChatMessageService
 {
-    private readonly List<ChatMessage> _messages = new();
+    private readonly ConcurrentBag<ChatMessage> _messages = new();
 
     public ChatMessageService()
     {

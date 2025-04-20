@@ -14,7 +14,10 @@ public class Query
 
     public IEnumerable<ChatMessage> GetMessages()
     {
-        return _chatMessageService.GetMessages();
+        var messages = _chatMessageService.GetMessages().ToList();
+        messages.Sort((x, y) => x.Timestamp.CompareTo(y.Timestamp));
+
+        return messages;
     }
 
     public ChatMessage GetMessage(string id)

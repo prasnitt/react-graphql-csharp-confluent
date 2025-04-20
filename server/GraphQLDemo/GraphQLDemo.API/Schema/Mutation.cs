@@ -11,11 +11,11 @@ public class Mutation
         _chatMessageService = chatMessageService;
     }
 
-    public string SendMessage(
+    public async Task<string> SendMessageAsync(
         [GraphQLNonNullType] string sender,
         [GraphQLNonNullType] string content)
     {
-        return _chatMessageService.AddMessage(sender, content);
+        return await _chatMessageService.AddMessageAsync(sender, content);
     }
 
     public bool ClearMessages()

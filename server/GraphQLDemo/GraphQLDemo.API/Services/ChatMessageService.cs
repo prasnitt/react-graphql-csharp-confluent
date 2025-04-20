@@ -1,4 +1,5 @@
-﻿using GraphQLDemo.API.Dto;
+﻿using Confluent.Kafka;
+using GraphQLDemo.API.Dto;
 using System.Collections.Concurrent;
 
 namespace GraphQLDemo.API.Services;
@@ -12,7 +13,7 @@ public interface IChatMessageService
 
     ChatMessage GetMessage(string id);
 
-    string AddMessage(string sender, string content);
+    Task<string> AddMessageAsync(string sender, string content);
     void ClearMessages();
 }
 
@@ -20,14 +21,22 @@ public interface IChatMessageService
 public class ChatMessageService : IChatMessageService
 {
     // ConcurrentBag is thread-safe and allows for concurrent access
+    // TODO: remove this and use Kafka
     private readonly ConcurrentBag<ChatMessage> _messages = new();
 
-    public ChatMessageService()
+    private readonly ILogger<ChatMessageService> _logger;
+    private readonly IProducer<String, ChatMessage> _producer;
+
+    public ChatMessageService(IProducer<String, ChatMessage> producer, ILogger<ChatMessageService> logger)
     {
+        _logger = logger;
+        _producer = producer;
+
+        logger.LogInformation("ChatMessageService is Active.");
         // use AddMessage method to add messages
-        AddMessage("Alice", "Hello, world!");
-        AddMessage("Bob", "Hi, Alice! How are you?");
-        AddMessage("Alice", "I'm good, thanks!");
+        //AddMessage("Alice", "Hello, world!");
+        //AddMessage("Bob", "Hi, Alice! How are you?");
+        //AddMessage("Alice", "I'm good, thanks!");
     }
 
     public IEnumerable<ChatMessage> GetMessages()
@@ -40,16 +49,41 @@ public class ChatMessageService : IChatMessageService
         return _messages.FirstOrDefault(m => m.Id == id);
     }
 
-    public string AddMessage(string sender, string content)
+    public async Task<string> AddMessageAsync(string sender, string content)
     {
         var message = new ChatMessage(sender, content);
         _messages.Add(message);
+
+        // Send message to Kafka
+        await SendMessageToKafkaAsync(message);
+
         return message.Id;
     }
 
     public void ClearMessages()
     {
         _messages.Clear();
+    }
+
+    private async Task SendMessageToKafkaAsync(ChatMessage chatMessage)
+    {
+        try
+        {
+            var message = new Message<string, ChatMessage>
+            {
+                Key = chatMessage.Id,
+                Value = chatMessage
+            };
+
+            var result = await _producer.ProduceAsync("chat-messages", message);
+            _producer.Flush();
+
+            _logger.LogInformation($"Message sent to Kafka: {result.Value}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error sending message to Kafka");
+        }
     }
 }
 

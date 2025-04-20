@@ -1,9 +1,12 @@
 using GraphQLDemo.API.Schema;
+using GraphQLDemo.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGraphQLServer().AddQueryType<Query>();
 
+// Register the chat message service
+builder.Services.AddSingleton<IChatMessageService, ChatMessageService>();
 
 
 var app = builder.Build();

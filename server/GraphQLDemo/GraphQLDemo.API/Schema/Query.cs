@@ -1,16 +1,30 @@
-﻿namespace GraphQLDemo.API.Schema;
+﻿using GraphQLDemo.API.Services;
+
+namespace GraphQLDemo.API.Schema;
 
 public class Query
 {
-    // TODO: Add query methods here
-    public string Hello() => "Hello, GraphQL!";
-    public string Goodbye() => "Goodbye, GraphQL!";
-    public string Greet(string name) => $"Hello, {name}!";
-    public string Farewell(string name) => $"Goodbye, {name}!";
-    public string GreetWithDefaultName(string name = "World") => $"Hello, {name}!";
-    public string FarewellWithDefaultName(string name = "World") => $"Goodbye, {name}!";
+    private readonly IChatMessageService _chatMessageService;
 
-    // TODO: remove above
+    public Query(IChatMessageService chatMessageService)
+    {
+        _chatMessageService = chatMessageService;
+    }
+
+    public IEnumerable<ChatMessage> GetMessages()
+    {
+        return _chatMessageService.GetMessages();
+    }
+
+    public ChatMessage GetMessage(string id)
+    {
+        return _chatMessageService.GetMessage(id);
+    }
+
+    // TODO: Add query methods here
+    [GraphQLDeprecated("This is deprecated")]
+    public string Hello() => "Hello, GraphQL!";
+
 
 }
 

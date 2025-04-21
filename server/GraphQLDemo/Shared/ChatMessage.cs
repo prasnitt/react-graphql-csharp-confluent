@@ -1,4 +1,4 @@
-﻿namespace GraphQLDemo.API.Dto;
+﻿namespace Shared;
 
 public class ChatMessage
 {

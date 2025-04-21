@@ -1,5 +1,5 @@
 ﻿using Confluent.Kafka;
-using GraphQLDemo.API.Dto;
+using Shared;
 using System.Collections.Concurrent;
 
 namespace GraphQLDemo.API.Services;

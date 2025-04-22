@@ -21,15 +21,19 @@ public class ChatHubWorker : BackgroundService
         _consumer.Subscribe(Constants.ChatHubTopic);
         while (!stoppingToken.IsCancellationRequested)
         {
-            if (_logger.IsEnabled(LogLevel.Information))
-            {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            }
-            await Task.Delay(1000, stoppingToken);
+            var message = _consumer.Consume(TimeSpan.FromMilliseconds(100));
 
-            //await _hubContext.Clients.All.ReceiveMessage($"Worker running at: {DateTimeOffset.Now}");
-            var message = _consumer.Consume(stoppingToken);
-            await SendMessageToClients(message.Message.Value);
+            if (message != null)
+            {
+                _logger.LogInformation($"Received message: {message.Message.Value.ToLogMessage()}");
+                await SendMessageToClients(message.Message.Value);
+            }
+            else
+            {
+                //_logger.LogWarning("No message received");
+                // Avoid tight loop if no message is available
+                await Task.Delay(10, stoppingToken);
+            }
         }
     }
 

@@ -12,7 +12,7 @@ var connection = new HubConnectionBuilder()
 
 connection.On<ChatMessage>("ReceiveMessage", message =>
 {
-    Console.WriteLine($"[{message.Timestamp}] {message.Sender}: '{message.Content}'");
+    Console.WriteLine(message.ToLogMessage());
 });
 
 await connection.StartAsync();

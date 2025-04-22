@@ -12,5 +12,10 @@ public class ChatMessage
         Sender = sender;
         Content = content;
     }
+
+    public string ToLogMessage()
+    {
+        return $"[{Timestamp}] {Sender}: '{Content}'";
+    }
 }
 

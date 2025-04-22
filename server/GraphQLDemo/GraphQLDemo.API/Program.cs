@@ -10,6 +10,23 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHealthChecks();
 
+var allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ConfiguredCors", policy =>
+    {
+        policy
+            .WithOrigins(allowedOrigins!)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
+
 builder.Services.AddGraphQLServer()
     .AddQueryType<Query>()
     .AddMutationType<Mutation>();
@@ -43,6 +60,8 @@ builder.Services.AddSingleton<IProducer<String, ChatMessage>>(sp =>
 var app = builder.Build();
 
 app.UseRouting();
+app.UseCors("ConfiguredCors");
+
 app.UseHealthChecks("/healthy");
 app.MapGraphQL();
 

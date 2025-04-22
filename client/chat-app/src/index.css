@@ -66,3 +66,28 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.join-screen,
+.chat-box {
+  max-width: 600px;
+  margin: auto;
+}
+
+.messages {
+  border: 1px solid #ccc;
+  padding: 10px;
+  height: 300px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+}
+
+.input-box {
+  display: flex;
+  gap: 10px;
+}
+

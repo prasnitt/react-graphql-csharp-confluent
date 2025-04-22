@@ -1,7 +1,8 @@
 // src/components/Chat.tsx
-import React, { useEffect, useRef, useState } from "react";
-import { HubConnectionBuilder } from "@microsoft/signalr";
+import React, { useRef, useState } from "react";
+import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 import { request, gql } from "graphql-request";
+
 
 const signalRUrl = "https://localhost:7124/chat-hub"; // server1
 const graphQLUrl = "http://localhost:5200/graphql"; // server2
@@ -16,7 +17,7 @@ const Chat: React.FC = () => {
   const [userName, setUserName] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const connectionRef = useRef<any>(null);
+  const connectionRef = useRef<HubConnection | null>(null);
 
   const connectToSignalR = async (name: string) => {
     const connection = new HubConnectionBuilder()

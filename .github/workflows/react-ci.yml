@@ -11,10 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: client/chat-app
-
+    
     steps:
       - name: ⬇️ Checkout code
         uses: actions/checkout@v4
@@ -22,20 +19,22 @@ jobs:
       - name: 🟨 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version-file: "./client/chat-app/.nvmrc"
 
       - name: 📦 Install dependencies
+        working-directory: ./client/chat-app
         run: npm ci
 
       - name: 🔧 Lint
+        working-directory: ./client/chat-app
         run: npm run lint
 
       - name: 🛠️ Build the app
+        working-directory: ./client/chat-app
         run: npm run build
 
       - name: 📤 Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: chat-app-build
+          name: chat-app-build-${{ github.run_number }}
           path: client/chat-app/dist

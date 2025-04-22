@@ -19,13 +19,13 @@ public class ChatHub : Hub<IChatClient>
     public override async Task OnConnectedAsync()
     {
         var clientName = Context.GetHttpContext()?.Request.Query["name"];
-        _logger.LogInformation($"Client '{Context.ConnectionId}' Connected. ");
-        await Clients.Others.ReceiveMessage($" {clientName} with connection {Context.ConnectionId} has joined");
+        _logger.LogInformation($" {clientName} with connection {Context.ConnectionId} has joined");
+        await Clients.All.ReceiveMessage($" {clientName} with connection {Context.ConnectionId} has joined");
     }
 
     //[HubMethodName("PublishMessageToOthers")]
     public async Task SendMessage(string message)
     {
-        await Clients.Others.ReceiveMessage(message);
+        await Clients.All.ReceiveMessage(message);
     }
 }

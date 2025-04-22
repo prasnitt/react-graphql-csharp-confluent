@@ -4,15 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>73178899-6638-4698-ab86-021dcb316fd2</UserSecretsId>
+    <UserSecretsId>d47f61ce-6f6d-4bf8-815b-d57cd32a8bf6</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Confluent.Kafka" Version="2.10.0" />
-    <PackageReference Include="Confluent.SchemaRegistry" Version="2.10.0" />
-    <PackageReference Include="Confluent.SchemaRegistry.Serdes.Json" Version="2.10.0" />
-    <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.4" />
+    <PackageReference Include="Confluent.SchemaRegistry.Serdes.Json" Version="1.9.3" />
+    <PackageReference Include="Confluent.SchemaRegistry" Version="1.9.3" />
+    <PackageReference Include="Confluent.Kafka" Version="1.9.3" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
   </ItemGroup>
 

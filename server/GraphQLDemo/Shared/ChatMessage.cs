@@ -1,4 +1,4 @@
-﻿namespace GraphQLDemo.API.Dto;
+﻿namespace Shared;
 
 public class ChatMessage
 {
@@ -11,6 +11,11 @@ public class ChatMessage
     {
         Sender = sender;
         Content = content;
+    }
+
+    public string ToLogMessage()
+    {
+        return $"[{Timestamp}] {Sender}: '{Content}'";
     }
 }
 

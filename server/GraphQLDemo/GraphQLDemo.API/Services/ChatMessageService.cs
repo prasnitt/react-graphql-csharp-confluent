@@ -1,5 +1,5 @@
 ﻿using Confluent.Kafka;
-using GraphQLDemo.API.Dto;
+using Shared;
 using System.Collections.Concurrent;
 
 namespace GraphQLDemo.API.Services;
@@ -75,7 +75,7 @@ public class ChatMessageService : IChatMessageService
                 Value = chatMessage
             };
 
-            var result = await _producer.ProduceAsync("chat-messages", message);
+            var result = await _producer.ProduceAsync(Constants.ChatHubTopic, message);
             _producer.Flush();
 
             _logger.LogInformation($"Message sent to Kafka: {result.Value}");

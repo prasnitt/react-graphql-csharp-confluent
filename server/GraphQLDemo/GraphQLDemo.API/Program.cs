@@ -1,10 +1,10 @@
 using Confluent.Kafka;
 using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
-using GraphQLDemo.API.Dto;
 using GraphQLDemo.API.Schema;
 using GraphQLDemo.API.Services;
 using Microsoft.Extensions.Options;
+using Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 

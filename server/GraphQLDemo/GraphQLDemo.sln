@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQLDemo.API", "GraphQLDemo.API\GraphQLDemo.API.csproj", "{099E23FA-E880-42B8-9814-384E7A884495}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLDemo.API", "GraphQLDemo.API\GraphQLDemo.API.csproj", "{099E23FA-E880-42B8-9814-384E7A884495}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatHub", "ChatHub\ChatHub.csproj", "{FD713234-7A1C-4350-A49D-BC30687FB9E4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{C04B8CF9-8ACF-4813-8D62-30DC66F44159}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatHubTestClient", "ChatHubTestClient\ChatHubTestClient.csproj", "{D26DCD93-2353-4998-A749-3C6C1C89F718}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{099E23FA-E880-42B8-9814-384E7A884495}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{099E23FA-E880-42B8-9814-384E7A884495}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{099E23FA-E880-42B8-9814-384E7A884495}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD713234-7A1C-4350-A49D-BC30687FB9E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD713234-7A1C-4350-A49D-BC30687FB9E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD713234-7A1C-4350-A49D-BC30687FB9E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD713234-7A1C-4350-A49D-BC30687FB9E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C04B8CF9-8ACF-4813-8D62-30DC66F44159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C04B8CF9-8ACF-4813-8D62-30DC66F44159}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C04B8CF9-8ACF-4813-8D62-30DC66F44159}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C04B8CF9-8ACF-4813-8D62-30DC66F44159}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D26DCD93-2353-4998-A749-3C6C1C89F718}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D26DCD93-2353-4998-A749-3C6C1C89F718}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D26DCD93-2353-4998-A749-3C6C1C89F718}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D26DCD93-2353-4998-A749-3C6C1C89F718}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

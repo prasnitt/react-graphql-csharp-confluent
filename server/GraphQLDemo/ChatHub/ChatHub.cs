@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Shared;
 
 namespace ChatHub;
 
 public interface IChatClient
 {
-    Task ReceiveMessage(string message);
+    Task ReceiveMessage(ChatMessage message);
 }
 public class ChatHub : Hub<IChatClient>
 {
@@ -19,12 +20,15 @@ public class ChatHub : Hub<IChatClient>
     public override async Task OnConnectedAsync()
     {
         var clientName = Context.GetHttpContext()?.Request.Query["name"];
-        _logger.LogInformation($" {clientName} with connection {Context.ConnectionId} has joined");
-        await Clients.All.ReceiveMessage($" {clientName} with connection {Context.ConnectionId} has joined");
+        var content = $" {clientName} with connection {Context.ConnectionId} has joined";
+        _logger.LogInformation(content);
+
+        var chatMessage = new ChatMessage("System", content);
+        await Clients.All.ReceiveMessage(chatMessage);
     }
 
     //[HubMethodName("PublishMessageToOthers")]
-    public async Task SendMessage(string message)
+    public async Task SendMessage(ChatMessage message)
     {
         await Clients.All.ReceiveMessage(message);
     }

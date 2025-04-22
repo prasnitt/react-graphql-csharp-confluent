@@ -35,6 +35,6 @@ public class ChatHubWorker : BackgroundService
 
     private async Task SendMessageToClients(ChatMessage message)
     {
-        await _hubContext.Clients.All.ReceiveMessage(message.Content);
+        await _hubContext.Clients.All.ReceiveMessage(message);
     }
 }

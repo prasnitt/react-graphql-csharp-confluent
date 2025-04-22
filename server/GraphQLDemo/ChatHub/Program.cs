@@ -9,6 +9,22 @@ using Shared;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHealthChecks();
 
+var allowedOrigins = builder.Configuration
+ .GetSection("Cors:AllowedOrigins")
+ .Get<string[]>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ConfiguredCors", policy =>
+    {
+        policy
+            .WithOrigins(allowedOrigins!)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<ChatHubWorker>();
 
@@ -30,7 +46,8 @@ builder.Services.AddSingleton<IConsumer<String, ChatMessage>>(sp =>
 
 
 var app = builder.Build();
-
+app.UseRouting();
+app.UseCors("ConfiguredCors");
 app.MapGet("/", () => "Hello World!");
 //app.UseWebSockets();
 app.UseHealthChecks("/healthy");

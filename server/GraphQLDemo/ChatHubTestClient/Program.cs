@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Shared;
 
 Console.WriteLine("Hello, World");
-var name = Environment.GetEnvironmentVariable("MY_NAME"); ;
+var name = Environment.GetEnvironmentVariable("MY_NAME");
 var connection = new HubConnectionBuilder()
     .WithUrl($"https://localhost:7124/chat-hub?name={name}")
     .WithAutomaticReconnect()

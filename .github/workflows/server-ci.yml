@@ -14,6 +14,9 @@ on:
 env:
   AWS_REGION: "ap-southeast-2"
 
+permissions:
+  id-token: write # for aws-actions/configure-aws-credentials
+
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -24,15 +24,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Configure AWS Credentials for China region audience
-      uses: aws-actions/configure-aws-credentials@v4.1.0
-      with:
-        aws-region: ${{ env.AWS_REGION}}
-        role-to-assume: arn:aws:iam::572169125256:role/github-action
-
-    - name: Verify AWS Credentials
-      run: aws sts get-caller-identity
-
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
@@ -46,3 +37,30 @@ jobs:
     - name: Test
       working-directory: ./server/GraphQLDemo
       run: dotnet test GraphQLDemo.sln --no-build --verbosity normal
+  
+    # TODO: publish only for main branch
+    - name: Configure AWS Credentials for China region audience
+      uses: aws-actions/configure-aws-credentials@v4.1.0
+      with:
+        aws-region: ${{ env.AWS_REGION}}
+        role-to-assume: arn:aws:iam::572169125256:role/github-action
+
+    - name: Login to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v2
+    
+    - name: Set Docker tag using run_number and sha
+      id: vars
+      run: |
+        SHORT_SHA=${GITHUB_SHA::8}
+        TAG="${GITHUB_REF_NAME}-${{ github.run_number }}-${SHORT_SHA}"
+        echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+    - name: Build Docker Image for GraphQLDemo.API
+      working-directory: ./server/GraphQLDemo
+      env:
+        ECR_REGISTRY: 572169125256.dkr.ecr.ap-southeast-2.amazonaws.com
+        ECR_REPOSITORY: graphqldemoapi
+        IMAGE_TAG: ${{ steps.vars.outputs.tag }}
+      run: |
+        docker build -f GraphQLDemo.API/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

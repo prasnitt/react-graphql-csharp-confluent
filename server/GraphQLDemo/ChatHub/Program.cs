@@ -33,12 +33,22 @@ builder.Services.Configure<SchemaRegistryConfig>(builder.Configuration.GetSectio
 builder.Services.AddSingleton<ISchemaRegistryClient>(sp =>
 {
     var config = sp.GetRequiredService<IOptions<SchemaRegistryConfig>>();
+    if (string.IsNullOrEmpty(config.Value.BasicAuthUserInfo))
+    {
+        config.Value.BasicAuthUserInfo = Environment.GetEnvironmentVariable("CONFLUENT_SCHEMA_REGISTRY_AUTH");
+    }
     return new CachedSchemaRegistryClient(config.Value);
 });
 
 builder.Services.AddSingleton<IConsumer<String, ChatMessage>>(sp =>
 {
     var config = sp.GetRequiredService<IOptions<ConsumerConfig>>();
+    var logger = sp.GetRequiredService<ILogger<Program>>();
+    if (string.IsNullOrEmpty(config.Value.SaslPassword))
+    {
+        logger.LogWarning("SaslPassword is not set in the configuration. Falling back to the environment variable 'CONFLUENT_SASL_PASSWORD'.");
+        config.Value.SaslPassword = Environment.GetEnvironmentVariable("CONFLUENT_SASL_PASSWORD");
+    }
     return new ConsumerBuilder<String, ChatMessage>(config.Value)
         .SetValueDeserializer(new JsonDeserializer<ChatMessage>().AsSyncOverAsync())
         .Build();

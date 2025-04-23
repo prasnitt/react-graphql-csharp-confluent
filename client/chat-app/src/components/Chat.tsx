@@ -4,8 +4,8 @@ import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 import { request, gql } from "graphql-request";
 
 
-const signalRUrl = "https://localhost:7124/chat-hub"; // server1
-const graphQLUrl = "http://localhost:5200/graphql"; // server2
+const signalRUrl = import.meta.env.VITE_SIGNALR_URL;
+const graphQLUrl = import.meta.env.VITE_GRAPHQL_URL;
 
 interface ChatMessage {
   sender: string;

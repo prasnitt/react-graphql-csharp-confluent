@@ -46,11 +46,8 @@ builder.Services.AddSingleton<IConsumer<String, ChatMessage>>(sp =>
     var logger = sp.GetRequiredService<ILogger<Program>>();
     if (string.IsNullOrEmpty(config.Value.SaslPassword))
     {
+        logger.LogWarning("SaslPassword is not set in the configuration. Falling back to the environment variable 'CONFLUENT_SASL_PASSWORD'.");
         config.Value.SaslPassword = Environment.GetEnvironmentVariable("CONFLUENT_SASL_PASSWORD");
-        if (string.IsNullOrEmpty(config.Value.SaslPassword))
-        {
-            logger.LogWarning("The 'SaslPassword' is not configured and the environment variable 'CONFLUENT_SASL_PASSWORD' is not set. This may cause authentication issues.");
-        }
     }
     return new ConsumerBuilder<String, ChatMessage>(config.Value)
         .SetValueDeserializer(new JsonDeserializer<ChatMessage>().AsSyncOverAsync())

@@ -43,7 +43,6 @@ builder.Services.AddSingleton<ISchemaRegistryClient>(sp =>
     var logger = sp.GetRequiredService<ILogger<Program>>();
     if (string.IsNullOrEmpty(config.Value.BasicAuthUserInfo))
     {
-        logger.LogWarning("Environment variable 'CONFLUENT_SCHEMA_REGISTRY_AUTH' is missing. Falling back to default value for BasicAuthUserInfo.");
         config.Value.BasicAuthUserInfo = Environment.GetEnvironmentVariable("CONFLUENT_SCHEMA_REGISTRY_AUTH");
     }
     return new CachedSchemaRegistryClient(config.Value);

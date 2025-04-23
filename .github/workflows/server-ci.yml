@@ -32,6 +32,8 @@ jobs:
       run: dotnet test GraphQLDemo.sln --no-build --verbosity normal
   
   deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:
       contents: read # for actions/checkout
       id-token: write # for aws-actions/configure-aws-credentials
@@ -65,7 +67,7 @@ jobs:
         docker build -f GraphQLDemo.API/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     
-    - name: Build Docker Image for GraphQLDemo.API
+    - name: Build Docker Image for chathub
       working-directory: ./server/GraphQLDemo
       env:
         ECR_REGISTRY:  ${{ vars.ECR_REGISTRY }}

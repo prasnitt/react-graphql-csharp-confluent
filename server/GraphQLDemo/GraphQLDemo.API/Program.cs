@@ -50,9 +50,10 @@ builder.Services.AddSingleton<ISchemaRegistryClient>(sp =>
 builder.Services.AddSingleton<IProducer<String, ChatMessage>>(sp =>
 {
     var config = sp.GetRequiredService<IOptions<ProducerConfig>>();
+    var logger = sp.GetRequiredService<ILogger<Program>>();
     if (string.IsNullOrEmpty(config.Value.SaslPassword))
     {
-        config.Value.SaslPassword = Environment.GetEnvironmentVariable("CONFLUENT_SASL_PASSWORD");
+        logger.LogWarning("SaslPassword is not set in the configuration. Falling back to the environment variable 'CONFLUENT_SASL_PASSWORD'.");
     }
 
     var schemaRegistryClient = sp.GetRequiredService<ISchemaRegistryClient>();

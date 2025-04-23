@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
@@ -29,3 +30,52 @@ jobs:
     - name: Test
       working-directory: ./server/GraphQLDemo
       run: dotnet test GraphQLDemo.sln --no-build --verbosity normal
+  
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: read # for actions/checkout
+      id-token: write # for aws-actions/configure-aws-credentials
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure AWS credentials via OIDC
+      uses: aws-actions/configure-aws-credentials@v4.1.0
+      with:
+        aws-region: ${{ vars.AWS_REGION}}
+        role-to-assume:  ${{ vars.OIDC_ROLE_ARN }}
+
+    - name: Login to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v2
+    
+    - name: Set Docker tag using run_number and sha
+      id: getTag
+      run: |
+        SHORT_SHA=${GITHUB_SHA::8}
+        TAG="${GITHUB_REF_NAME}-${{ github.run_number }}-${SHORT_SHA}"
+        echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+    - name: Build Docker Image for GraphQLDemo.API
+      working-directory: ./server/GraphQLDemo
+      env:
+        ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
+        ECR_REPOSITORY: graphqldemoapi
+        IMAGE_TAG: ${{ steps.getTag.outputs.tag }}
+      run: |
+        docker build -f GraphQLDemo.API/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    
+    - name: Build Docker Image for chathub
+      working-directory: ./server/GraphQLDemo
+      env:
+        ECR_REGISTRY:  ${{ vars.ECR_REGISTRY }}
+        ECR_REPOSITORY: chathub
+        IMAGE_TAG: ${{ steps.getTag.outputs.tag }}
+      run: |
+        docker build -f ChatHub/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+
+  

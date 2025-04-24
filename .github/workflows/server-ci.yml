@@ -31,7 +31,7 @@ jobs:
         working-directory: ./server/GraphQLDemo
         run: dotnet test GraphQLDemo.sln --no-build --verbosity normal
 
-  deploy:
+  deploy-producer-on-app-runner:
     needs: build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:
@@ -68,13 +68,3 @@ jobs:
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-      - name: Build Docker Image for chathub
-        working-directory: ./server/GraphQLDemo
-        env:
-          ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
-          ECR_REPOSITORY: chathub
-          IMAGE_TAG: ${{ steps.getTag.outputs.tag }}
-        run: |
-          docker build -f ChatHub/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest

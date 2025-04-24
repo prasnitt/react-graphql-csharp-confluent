@@ -22,8 +22,10 @@ public class ChatHub : Hub<IChatClient>
     public override async Task OnConnectedAsync()
     {
         var clientName = Context.GetHttpContext()?.Request.Query["name"];
+        clientName ??= "Unknown"; // Fallback if name is not provided
         var content = $" 👋 '{clientName}' has just joined. 👋 ";
         _logger.LogInformation(content);
+
 
         _clientManager.AddClient(Context.ConnectionId, clientName);
         var chatMessage = new ChatMessage("System", content);

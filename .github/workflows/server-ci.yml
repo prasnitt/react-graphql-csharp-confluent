@@ -59,6 +59,7 @@ jobs:
             --document-name "AWS-RunShellScript" \
             --instance-ids "$EC2_INSTANCE_ID" \
             --comment "Deploying new build from GitHub" \
+            --region "$AWS_REGION" \
             --parameters commands='[
               "cd $PROJECT_DIR || git clone $REPO_URL $PROJECT_DIR && cd $PROJECT_DIR",
               "git reset --hard",
@@ -67,8 +68,8 @@ jobs:
               "dotnet build -c Release",
               "pkill -f ChatHub.dll || true",
               "nohup dotnet ChatHub.dll --urls \"http://0.0.0.0:5000\" > output.log 2>&1 &"
-            ]' \
-            --region "$AWS_REGION"
+            ]' 
+            
     
   deploy-producer-on-app-runner:
     needs: build

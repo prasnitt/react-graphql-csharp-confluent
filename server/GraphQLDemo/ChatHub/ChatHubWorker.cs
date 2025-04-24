@@ -25,7 +25,7 @@ public class ChatHubWorker : BackgroundService
 
             if (message != null)
             {
-                _logger.LogWarning($"Received message: {message.Message.Value.ToLogMessage()}");
+                _logger.LogInformation($"Received message: {message.Message.Value.ToLogMessage()}");
                 await SendMessageToClients(message.Message.Value);
             }
             else

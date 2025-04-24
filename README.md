@@ -24,8 +24,6 @@ This project demonstrates my skills in building a real-time chat application.
 3. **SignalR**  
 4. **C#**  
 
-## Architecture Diagram  
-![Architecture Diagram](ArchitectureDiagram.drawio.png)  
 
 ## Future Improvements  
 If given more time, I plan to:  
@@ -33,6 +31,12 @@ If given more time, I plan to:
 2. Add authentication to restrict access to the app.  
 3. Write unit tests for better code quality.  
 4. Enhance the UI of the React app.  
+5. Use Terraform for Infrasctuctur as Code
+6. And many more.
+
+## Architecture Diagram  
+![Architecture Diagram](screenshots/ArchitectureDiagram.drawio.png)  
+
 
 ## How It Works  
 1. **Producer Server**:  
@@ -44,3 +48,10 @@ If given more time, I plan to:
      - Broadcasts messages to all connected clients using SignalR.  
 
 This project showcases my ability to integrate multiple technologies and deploy a functional application.  
+
+
+## Screenshots
+
+### Localhost Chat app
+
+![Localhost Chat app](screenshots/LocalHostChatApp.png)  

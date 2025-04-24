@@ -18,6 +18,7 @@ const Chat: React.FC = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const connectionRef = useRef<HubConnection | null>(null);
+  const [isConnected, setIsConnected] = useState(false);
 
   const connectToSignalR = async (name: string) => {
     const connection = new HubConnectionBuilder()
@@ -31,10 +32,12 @@ const Chat: React.FC = () => {
 
     connection.onclose((error) => {
       console.error("SignalR disconnected", error);
+      setIsConnected(false);
     });
 
     await connection.start();
     connectionRef.current = connection;
+    setIsConnected(true);
   };
 
   const sendMessage = async () => {
@@ -63,7 +66,7 @@ const Chat: React.FC = () => {
     }
   };
 
-  if (!connectionRef.current) {
+  if (!isConnected) {
     return (
       <div className="join-screen">
         <h2>Enter your name to join the chat</h2>

@@ -92,7 +92,7 @@ void WarmUpKafkaProducer(WebApplication app)
         producer.Flush();
 
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
-        logger.LogInformation("Kafka producer initialized early using GetMetadata.");
+        logger.LogInformation("Kafka producer initialized early using Flush().");
     }
     catch (Exception ex)
     {

@@ -3,7 +3,7 @@ Description=ChatHub .NET App with Git Pull & Build Script
 After=network.target
 
 [Service]
-WorkingDirectory=/home/ec2-user/react-graphql-csharp-confluent
+WorkingDirectory=/home/ec2-user
 
 # Call the shell script before starting the app
 ExecStartPre=/home/ec2-user/react-graphql-csharp-confluent/server/GraphQLDemo/ChatHub/ec2deploy/deploy.sh

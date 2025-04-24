@@ -29,6 +29,10 @@ const Chat: React.FC = () => {
       setMessages((prev) => [...prev, message]);
     });
 
+    connection.onclose((error) => {
+      console.error("SignalR disconnected", error);
+    });
+
     await connection.start();
     connectionRef.current = connection;
   };

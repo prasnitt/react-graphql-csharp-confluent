@@ -10,21 +10,42 @@ public interface IChatClient
 public class ChatHub : Hub<IChatClient>
 {
     private readonly ILogger<ChatHub> _logger;
+    private readonly ClientConnectionManager _clientManager;
 
-    public ChatHub(ILogger<ChatHub> logger)
+    public ChatHub(ILogger<ChatHub> logger, ClientConnectionManager clientManager)
     {
         _logger = logger;
+        _clientManager = clientManager;
         _logger.LogInformation("ChatHub is Active.");
     }
 
     public override async Task OnConnectedAsync()
     {
         var clientName = Context.GetHttpContext()?.Request.Query["name"];
-        var content = $" {clientName} with connection {Context.ConnectionId} has joined";
+        var content = $" 👋 '{clientName}' has just joined. 👋 ";
         _logger.LogInformation(content);
 
+        _clientManager.AddClient(Context.ConnectionId, clientName);
         var chatMessage = new ChatMessage("System", content);
         await Clients.All.ReceiveMessage(chatMessage);
+    }
+
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+
+        if (_clientManager.TryGetClient(Context.ConnectionId, out string clientName))
+        {
+            var content = $" '{clientName}' has just left. 😪 😪";
+            _logger.LogInformation(content);
+
+            var chatMessage = new ChatMessage("System", content);
+            await Clients.Others.ReceiveMessage(chatMessage);
+            _clientManager.RemoveClient(Context.ConnectionId);
+        }
+        else
+        {
+            _logger.LogWarning("Client name not found for connection ID: {ConnectionId}", Context.ConnectionId);
+        }
     }
 
     //[HubMethodName("PublishMessageToOthers")]

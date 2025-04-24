@@ -25,6 +25,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddSingleton<ClientConnectionManager>();
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<ChatHubWorker>();
 

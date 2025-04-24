@@ -69,8 +69,14 @@ const Chat: React.FC = () => {
         <h2>Enter your name to join the chat</h2>
         <input
           type="text"
+          placeholder="Your name"
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleJoin();
+            }
+          }}
         />
         <button onClick={handleJoin}>Join Chat</button>
       </div>
@@ -93,6 +99,11 @@ const Chat: React.FC = () => {
           placeholder="Type a message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              sendMessage();
+            }
+          }}
         />
         <button onClick={sendMessage}>Send</button>
       </div>

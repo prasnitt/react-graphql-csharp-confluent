@@ -1,0 +1,21 @@
+[Unit]
+Description=ChatHub .NET App with Git Pull & Build Script
+After=network.target
+
+[Service]
+WorkingDirectory=/home/ec2-user/react-graphql-csharp-confluent
+
+# Call the shell script before starting the app
+ExecStartPre=/home/ec2-user/react-graphql-csharp-confluent/server/GraphQLDemo/ChatHub/ec2deploy/deploy.sh
+
+# Start the built app
+ExecStart=/usr/bin/dotnet /home/ec2-user/react-graphql-csharp-confluent/server/GraphQLDemo/ChatHub/bin/Release/net8.0/ChatHub.dll --urls "http://0.0.0.0:5000"
+
+Restart=always
+RestartSec=10
+User=ec2-user
+SyslogIdentifier=chathub
+Environment=DOTNET_ENVIRONMENT=Production
+
+[Install]
+WantedBy=multi-user.target

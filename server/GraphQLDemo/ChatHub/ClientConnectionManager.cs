@@ -16,9 +16,12 @@ public class ClientConnectionManager
 
     public void RemoveClient(string connectionId)
     {
-        if (_clients.TryGetValue(connectionId, out string clientName))
+        lock (_lock)
         {
-            _clients.Remove(connectionId);
+            if (_clients.TryGetValue(connectionId, out string clientName))
+            {
+                _clients.Remove(connectionId);
+            }
         }
     }
 

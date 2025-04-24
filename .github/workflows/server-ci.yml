@@ -49,8 +49,8 @@ jobs:
       
       - name: Send deploy command to EC2 via SSM
         env:
-          EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          EC2_INSTANCE_ID: ${{ vars.EC2_INSTANCE_ID }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
           REPO_URL: https://github.com/prasnitt/react-graphql-csharp-confluent.git
           PROJECT_DIR: /home/ec2-user/react-graphql-csharp-confluent
         run: |

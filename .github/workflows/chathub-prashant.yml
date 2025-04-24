@@ -43,6 +43,7 @@ jobs:
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v2
       with:
+        slot-name: ''
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.chathub_prashant_B7D5 }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}

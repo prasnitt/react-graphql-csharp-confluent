@@ -50,6 +50,20 @@ builder.Services.AddSingleton<IConsumer<String, ChatMessage>>(sp =>
         logger.LogWarning("SaslPassword is not set in the configuration. Falling back to the environment variable 'CONFLUENT_SASL_PASSWORD'.");
         config.Value.SaslPassword = Environment.GetEnvironmentVariable("CONFLUENT_SASL_PASSWORD");
     }
+
+    if (string.IsNullOrEmpty(config.Value.SaslPassword))
+    {
+        logger.LogWarning("SaslPassword is still not set");
+    }
+
+    if (string.IsNullOrEmpty(config.Value.GroupId))
+    {
+        logger.LogWarning("GroupId has not set");
+        config.Value.GroupId = Environment.GetEnvironmentVariable("CONFLUENT_GROUP_ID");
+    }
+
+    logger.LogWarning($" {config.Value.GroupId} is final group id");
+
     return new ConsumerBuilder<String, ChatMessage>(config.Value)
         .SetValueDeserializer(new JsonDeserializer<ChatMessage>().AsSyncOverAsync())
         .Build();

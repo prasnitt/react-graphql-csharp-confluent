@@ -40,7 +40,6 @@ builder.Services.Configure<SchemaRegistryConfig>(builder.Configuration.GetSectio
 builder.Services.AddSingleton<ISchemaRegistryClient>(sp =>
 {
     var config = sp.GetRequiredService<IOptions<SchemaRegistryConfig>>();
-    var logger = sp.GetRequiredService<ILogger<Program>>();
     if (string.IsNullOrEmpty(config.Value.BasicAuthUserInfo))
     {
         config.Value.BasicAuthUserInfo = Environment.GetEnvironmentVariable("CONFLUENT_SCHEMA_REGISTRY_AUTH");
@@ -78,4 +77,26 @@ app.UseHealthChecks("/healthy");
 app.MapGraphQL();
 
 
+// Force Kafka producer to initialize early (without that the first request will take a long time)
+WarmUpKafkaProducer(app);
+
 app.Run();
+
+
+
+void WarmUpKafkaProducer(WebApplication app)
+{
+    try
+    {
+        var producer = app.Services.GetRequiredService<IProducer<string, ChatMessage>>();
+        producer.Flush();
+
+        var logger = app.Services.GetRequiredService<ILogger<Program>>();
+        logger.LogInformation("Kafka producer initialized early using Flush().");
+    }
+    catch (Exception ex)
+    {
+        var logger = app.Services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Kafka producer early initialization failed.");
+    }
+}

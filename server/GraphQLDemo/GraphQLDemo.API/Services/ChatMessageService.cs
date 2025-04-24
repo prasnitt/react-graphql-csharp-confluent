@@ -75,10 +75,21 @@ public class ChatMessageService : IChatMessageService
                 Value = chatMessage
             };
 
-            var result = await _producer.ProduceAsync(Constants.ChatHubTopic, message);
-            _producer.Flush();
+            // Use Task.Run to run the Kafka producer in a separate thread
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    var result = await _producer.ProduceAsync(Constants.ChatHubTopic, message);
+                    _producer.Flush();
 
-            _logger.LogInformation($"Message sent to Kafka: {result.Value}");
+                    _logger.LogInformation($"Message sent to Kafka: {result.Value}");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Kafka send failed");
+                }
+            });
         }
         catch (Exception ex)
         {

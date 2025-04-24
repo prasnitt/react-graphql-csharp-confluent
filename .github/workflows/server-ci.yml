@@ -31,7 +31,46 @@ jobs:
         working-directory: ./server/GraphQLDemo
         run: dotnet test GraphQLDemo.sln --no-build --verbosity normal
 
-  deploy:
+  deploy-consumer-on-ec2-via-ssm:
+    needs: build
+    # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: read # for actions/checkout
+      id-token: write # for aws-actions/configure-aws-credentials via OIDC
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ vars.AWS_REGION}}
+          role-to-assume: ${{ vars.OIDC_ROLE_ARN }}
+      
+      - name: Send deploy command to EC2 via SSM
+        env:
+          EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          REPO_URL: https://github.com/prasnitt/react-graphql-csharp-confluent.git
+          PROJECT_DIR: /home/ec2-user/react-graphql-csharp-confluent
+        run: |
+          
+          aws ssm send-command \
+            --document-name "AWS-RunShellScript" \
+            --instance-ids "$EC2_INSTANCE_ID" \
+            --comment "Deploying new build from GitHub" \
+            --parameters commands='[
+              "cd $PROJECT_DIR || git clone $REPO_URL $PROJECT_DIR && cd $PROJECT_DIR",
+              "git reset --hard",
+              "git pull origin main",
+              "cd server/GraphQLDemo/ChatHub", 
+              "dotnet build -c Release",
+              "pkill -f ChatHub.dll || true",
+              "nohup dotnet ChatHub.dll --urls \"http://0.0.0.0:5000\" > output.log 2>&1 &"
+            ]' \
+            --region "$AWS_REGION"
+    
+  deploy-producer-on-app-runner:
     needs: build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:
@@ -68,13 +107,3 @@ jobs:
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-      - name: Build Docker Image for chathub
-        working-directory: ./server/GraphQLDemo
-        env:
-          ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
-          ECR_REPOSITORY: chathub
-          IMAGE_TAG: ${{ steps.getTag.outputs.tag }}
-        run: |
-          docker build -f ChatHub/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest

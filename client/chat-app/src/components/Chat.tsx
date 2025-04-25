@@ -1,8 +1,6 @@
-// src/components/Chat.tsx
 import React, { useRef, useState } from "react";
 import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 import { request, gql } from "graphql-request";
-
 
 const signalRUrl = import.meta.env.VITE_SIGNALR_URL;
 const graphQLUrl = import.meta.env.VITE_GRAPHQL_URL;
@@ -15,14 +13,17 @@ interface ChatMessage {
 
 const Chat: React.FC = () => {
   const [userName, setUserName] = useState("");
+  const [passPhrase, setPassPhrase] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const connectionRef = useRef<HubConnection | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [chatError, setChatError] = useState<string | null>(null);
+  const connectionRef = useRef<HubConnection | null>(null);
 
   const connectToSignalR = async (name: string) => {
     const connection = new HubConnectionBuilder()
-      .withUrl(`${signalRUrl}?name=${name}`,{ withCredentials: true})
+      .withUrl(`${signalRUrl}?name=${name}`, { withCredentials: true })
       .withAutomaticReconnect()
       .build();
 
@@ -44,8 +45,8 @@ const Chat: React.FC = () => {
     if (!message.trim()) return;
 
     const mutation = gql`
-      mutation SendMessage($sender: String!, $content: String!) {
-        sendMessage(sender: $sender, content: $content)
+      mutation SendMessage($sender: String!, $content: String!, $passPhrase: String!) {
+        sendMessage(sender: $sender, content: $content, passPhrase: $passPhrase)
       }
     `;
 
@@ -53,23 +54,46 @@ const Chat: React.FC = () => {
       await request(graphQLUrl, mutation, {
         sender: userName,
         content: message,
+        passPhrase,
       });
       setMessage("");
-    } catch (error) {
+    } catch (error: any) {
       console.error("GraphQL error", error);
+      const message = error.response?.errors?.[0]?.message || "Failed to send message.";
+      setChatError(message);
     }
   };
 
-  const handleJoin = () => {
-    if (userName.trim()) {
-      connectToSignalR(userName);
+  const handleJoin = async () => {
+    if (!userName.trim() || !passPhrase.trim()) {
+      setAuthError("Both fields are required.");
+      return;
+    }
+
+    const mutation = gql`
+      mutation {
+        isAuthenticated(passPhrase: "${passPhrase}")
+      }
+    `;
+
+    try {
+      const response = await request(graphQLUrl, mutation);
+      if (response.isAuthenticated) {
+        await connectToSignalR(userName);
+      } else {
+        setAuthError("Incorrect passphrase. Please try again.");
+      }
+    } catch (error) {
+      console.error("GraphQL error", error);
+      setAuthError("Authentication failed. Try again.");
     }
   };
 
   if (!isConnected) {
     return (
       <div className="join-screen">
-        <h2>Enter your name to join the chat</h2>
+        {authError && <p style={{ color: "red" }}>{authError}</p>}
+        <h2>Enter your name and passphrase to join</h2>
         <input
           type="text"
           placeholder="Your name"
@@ -81,6 +105,18 @@ const Chat: React.FC = () => {
             }
           }}
         />
+        <input
+          type="password"
+          placeholder="Passphrase"
+          value={passPhrase}
+          onChange={(e) => setPassPhrase(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleJoin();
+            }
+          }}
+        />
+        
         <button onClick={handleJoin}>Join Chat</button>
       </div>
     );
@@ -95,6 +131,7 @@ const Chat: React.FC = () => {
             <strong>{msg.sender}</strong>: {msg.content}
           </div>
         ))}
+        {chatError && <div style={{ color: "red" }}>{chatError}</div>}
       </div>
       <div className="input-box">
         <input
@@ -103,7 +140,7 @@ const Chat: React.FC = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               sendMessage();
             }
           }}

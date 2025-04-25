@@ -22,7 +22,7 @@ This project demonstrates my skills in building a real-time chat application.
 1. **AWS** 
     
     * `AWS amplify`: for Single page application deployment (CI/CD)
-    * `AWS App runner`:  for GraphQL Sever and Producer (Ci/CD via Github actions)
+    * `AWS App runner`:  for GraphQL Sever and Producer (Ci/CD via Github actions using Docker image on ECR)
     * `EC2`: for Consumer and SignalR based Chathub (partial CI/CD)
     * `Route 53`: for DNS records
     

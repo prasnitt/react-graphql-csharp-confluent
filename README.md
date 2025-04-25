@@ -19,7 +19,13 @@ This project demonstrates my skills in building a real-time chat application.
 3. **React** (basic implementation)  
 
 ### Additional Tools and Skills  
-1. **AWS**  
+1. **AWS** 
+    
+    * `AWS amplify`: for Single page application deployment (CI/CD)
+    * `AWS App runner`:  for GraphQL Sever and Producer (Ci/CD via Github actions)
+    * `EC2`: for Consumer and SignalR based Chathub (partial CI/CD)
+    * `Route 53`: for DNS records
+    
 2. **GitHub Actions** for CI/CD  
 3. **SignalR**  
 4. **C#**  

@@ -91,9 +91,9 @@ const Chat: React.FC = () => {
 
   if (!isConnected) {
     return (
-      <div className="join-screen">
+      <div className="join-form" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '300px', margin: '0 auto' }}>
         {authError && <p style={{ color: "red" }}>{authError}</p>}
-        <h2>Enter your name and passphrase to join</h2>
+        <h2>Welcome to Chatapp</h2>
         <input
           type="text"
           placeholder="Your name"
@@ -104,6 +104,7 @@ const Chat: React.FC = () => {
               handleJoin();
             }
           }}
+          style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
         />
         <input
           type="password"
@@ -115,9 +116,21 @@ const Chat: React.FC = () => {
               handleJoin();
             }
           }}
+          style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
         />
-        
-        <button onClick={handleJoin}>Join Chat</button>
+        <button
+          onClick={handleJoin}
+          style={{
+            padding: '10px',
+            backgroundColor: '#007bff',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+          }}
+        >
+          Join Chat
+        </button>
       </div>
     );
   }

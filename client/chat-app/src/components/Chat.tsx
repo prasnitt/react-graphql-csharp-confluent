@@ -11,6 +11,10 @@ interface ChatMessage {
   timestamp: string;
 }
 
+type AuthResponse = {
+  isAuthenticated: boolean;
+};
+
 const Chat: React.FC = () => {
   const [userName, setUserName] = useState("");
   const [passPhrase, setPassPhrase] = useState("");
@@ -76,7 +80,9 @@ const Chat: React.FC = () => {
     `;
 
     try {
-      const response = await request(graphQLUrl, mutation);
+      const response = await request<AuthResponse>(graphQLUrl, mutation, {
+        passPhrase,
+      });
       if (response.isAuthenticated) {
         await connectToSignalR(userName);
       } else {

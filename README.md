@@ -58,6 +58,10 @@ This project showcases my ability to integrate multiple technologies and deploy 
 
 ## Screenshots
 
-### Localhost Chat app
+### Login Screen on web and Mobile
 
-![Localhost Chat app](screenshots/LocalHostChatApp.png)  
+![Login Screen on web and Mobile](screenshots/LoginScreenOnDifferentDevice.png)  
+
+### Chat app look Web and Mobile
+
+![Chat app look Web and Mobile](screenshots/HostedChatApp.png)  

@@ -57,10 +57,9 @@ const Chat: React.FC = () => {
         passPhrase,
       });
       setMessage("");
-    } catch (error: any) {
+    } catch (error) {
       console.error("GraphQL error", error);
-      const message = error.response?.errors?.[0]?.message || "Failed to send message.";
-      setChatError(message);
+      setChatError("Failed to send message.");
     }
   };
 

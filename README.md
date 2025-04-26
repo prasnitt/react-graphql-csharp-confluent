@@ -2,6 +2,8 @@
 
 This project demonstrates my skills in building a real-time chat application.  
 
+This project was designed to demonstrate my ability to integrate diverse technologies into a cohesive, real-time application. It highlights my skills in backend development, cloud infrastructure, and frontend basics.
+
 ## Features  
 - **Chat Application**: Users can join the chat by entering their name, broadcast messages, and view messages from others in real-time.  
 - **Two Servers**:  
@@ -30,6 +32,12 @@ This project demonstrates my skills in building a real-time chat application.
 2. **GitHub Actions** for CI/CD  
 3. **SignalR**  
 4. **C#**  
+
+### Challenges Faced  
+1. **Real-Time Communication**: Implementing SignalR for seamless real-time updates.   
+2. **Cloud Integration**: Configuring Confluent Cloud and managing API keys securely.  
+3. **CI/CD Pipelines**: Setting up automated deployment pipelines using GitHub Actions and AWS services.  
+3. **Setting up SSL Certificate**: Using Route 53 and ACM (AWS Certificate Manager) was not easy task.
 
 
 ## Future Improvements  

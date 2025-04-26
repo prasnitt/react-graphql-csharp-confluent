@@ -40,7 +40,7 @@ If given more time, I plan to:
      1. Refactor the project structure and improve naming conventions.  
      2. Add authentication to restrict access to the app.  
      3. Write unit tests for better code quality.  
-     4. Use Terraform for Infrasctuctur as Code
+     4. Use Terraform for Infrastructure as Code
      5. And many more.
 
 2. Frontend:

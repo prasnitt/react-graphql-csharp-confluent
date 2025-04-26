@@ -16,17 +16,16 @@ This project showcases my ability to build a real-time chat application by integ
 ![Architecture Diagram](screenshots/ArchitectureDiagram.drawio.png)  
 
 ## Prerequisites  
-- Node.js (v16 or higher)
+- Node.js (v16 or higher)  
 - Docker (for building and deploying images)  
 - (optional) Confluent Cloud account with API keys  
 
-## Basic Authentication
+## Basic Authentication  
 
-I have added very basic authentication so that a person will not exploit them. I have done by using `PASS_PHRASE` evironment vairble in my Producer server. 
+I have added very basic authentication to prevent unauthorized access. This is implemented using the `PASS_PHRASE` environment variable in my Producer server.  
 
--  If `PASS_PHRASE` evironment vairble is not set then, application is not secure. User can put any value to enter the app.
-- If `PASS_PHRASE` evironment vairble has been setup, then user has to put exact string as environment variable. However, the comparision of password is case insenstive.
-
+- If the `PASS_PHRASE` environment variable is not set, the application is not secure, and users can enter any value to access the app.  
+- If the `PASS_PHRASE` environment variable is set, users must provide the exact string as the environment variable. However, the comparison of the password is case-insensitive.  
 
 ## Setup and Installation  
 1. Clone the repository:  
@@ -34,36 +33,36 @@ I have added very basic authentication so that a person will not exploit them. I
     git clone https://github.com/prasnitt/react-graphql-csharp-confluent.git
     cd react-graphql-csharp-confluent
     ```
-2. Procucer Server Setup:
+2. Producer Server Setup:  
 
-     1. Go to following directory
+     1. Go to the following directory:  
      ```bash
      cd server/GraphQLDemo/GraphQLDemo.API
      ```
-     2. Update `appsettings.json` file (E.g. API Key etc)
-     3. Run following command to run the server. Y
+     2. Update the `appsettings.json` file (e.g., API Key, etc.).  
+     3. Run the following command to start the server:  
      ```bash
      dotnet run
      ```
-     4. Open  http://localhost:5200/graphql/ link for GraphQL apis
+     4. Open [http://localhost:5200/graphql/](http://localhost:5200/graphql/) to access the GraphQL APIs.  
 
-3. Consumer Server Setup:
+3. Consumer Server Setup:  
 
-     1. Go to following directory
+     1. Go to the following directory:  
      ```bash
      cd server/GraphQLDemo/ChatHub
      ```
-     2. Update `appsettings.json` file (E.g. API Key etc)
-     3. (optinal) Set an environment variable `PASS_PHRASE` as mention above.
-     3. Run following command to run the server. Y
+     2. Update the `appsettings.json` file (e.g., API Key, etc.).  
+     3. (optional) Set an environment variable `PASS_PHRASE` as mentioned above.  
+     4. Run the following command to start the server:  
      ```bash
      dotnet run
      ```
-     4. Open  http://localhost:5198/ link you will see `Hello World!`, this is just to demonstrate that server is up. However, we are running websocket server at https://localhost:7124/chat-hub
+     5. Open [http://localhost:5198/](http://localhost:5198/). You will see `Hello World!`, which demonstrates that the server is running. The WebSocket server is available at [https://localhost:7124/chat-hub](https://localhost:7124/chat-hub).  
 
-4. Frontend App setup:
+4. Frontend App Setup:  
 
-     1. Go to following directory
+     1. Go to the following directory:  
      ```bash
      cd client/chat-app/
      ```
@@ -72,16 +71,16 @@ I have added very basic authentication so that a person will not exploit them. I
      npm install
      ```
      3. Configure environment variables:  
-     - Add your Confluent Cloud API keys and AWS credentials to a `.env` file.  
+        - Add your Confluent Cloud API keys and AWS credentials to a `.env` file.  
 
      4. Start the application:  
      ```bash
      npm run dev
      ```
-     5. You will be able to access the app on App 
-     6. Note: If you see any CORS related issue fix in `appsetting.json` file of server side and rerun the server.
-     6. Put your name on App and Passphrase (as mention above)
-     7. And start chatting. You can open multiple windows to test this.
+     5. You will be able to access the app in your browser.  
+     6. Note: If you encounter any CORS-related issues, update the `appsettings.json` file on the server side and restart the server.  
+     7. Enter your name and the passphrase (as mentioned above) in the app.  
+     8. Start chatting! You can open multiple windows to test this.  
 
 ## How It Works  
 1. **Producer Server**:  
@@ -118,7 +117,7 @@ I have added very basic authentication so that a person will not exploit them. I
 1. **Real-Time Communication**: Implementing SignalR for seamless real-time updates.   
 2. **Cloud Integration**: Configuring Confluent Cloud and securely managing API keys.  
 3. **CI/CD Pipelines**: Setting up automated deployment pipelines using GitHub Actions and AWS services.  
-4. **Setting up an SSL Certificate**: Using Route 53 and ACM (AWS Certificate Manager) was a challenging task.
+4. **Setting up an SSL certificate**: Using Route 53 and ACM (AWS Certificate Manager) was challenging.  
 
 ## Screenshots  
 
@@ -133,9 +132,9 @@ If given more time, I plan to:
 
 1. Backend:  
      1. Refactor the project structure and improve naming conventions.  
-     2. Add authentication to restrict access to the app.  
+     2. Implement authentication to restrict access to the app.  
      3. Write unit tests to enhance code quality.  
-     4. Use Terraform for Infrastructure as Code (IaC).  
+     4. Use Terraform for infrastructure as code (IaC).  
      5. Explore additional improvements as needed.  
 
 2. Frontend:  

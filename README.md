@@ -25,7 +25,7 @@ This project showcases my ability to build a real-time chat application by integ
 I have added very basic authentication to prevent unauthorized access. This is implemented using the `PASS_PHRASE` environment variable in my Producer server.  
 
 - If the `PASS_PHRASE` environment variable is not set, the application is not secure, and users can enter any value to access the app.  
-- If the `PASS_PHRASE` environment variable is set, users must provide the exact string as the environment variable. However, the comparison of the password is case-insensitive.  
+- If the `PASS_PHRASE` environment variable is set, users must provide the passphrase that matches the environment variable. The comparison is case-insensitive.  
 
 ## Setup and Installation  
 1. Clone the repository:  

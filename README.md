@@ -25,6 +25,7 @@ This project demonstrates my skills in building a real-time chat application.
     * `AWS App runner`:  for GraphQL Sever and Producer (Ci/CD via Github actions by deploying Docker image to ECR)
     * `EC2`: for Consumer and SignalR based Chathub (partial CI/CD)
     * `Route 53`: for DNS records
+    * `Parameter Store`: To save secrets (e.g. Confluent Cloud API keys)
     
 2. **GitHub Actions** for CI/CD  
 3. **SignalR**  
@@ -32,13 +33,21 @@ This project demonstrates my skills in building a real-time chat application.
 
 
 ## Future Improvements  
-If given more time, I plan to:  
-1. Refactor the project structure and improve naming conventions.  
-2. Add authentication to restrict access to the app.  
-3. Write unit tests for better code quality.  
-4. Enhance the UI of the React app.  
-5. Use Terraform for Infrasctuctur as Code
-6. And many more.
+If given more time, I plan to: 
+
+1. Backend:
+
+     1. Refactor the project structure and improve naming conventions.  
+     2. Add authentication to restrict access to the app.  
+     3. Write unit tests for better code quality.  
+     4. Use Terraform for Infrasctuctur as Code
+     5. And many more.
+
+2. Frontend:
+
+     1. Make the code more modular
+     2. Use Appolo client library for GraphQL
+     3. Add better CSS library
 
 ## Architecture Diagram  
 ![Architecture Diagram](screenshots/ArchitectureDiagram.drawio.png)  

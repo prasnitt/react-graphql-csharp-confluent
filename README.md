@@ -46,7 +46,7 @@ If given more time, I plan to:
 2. Frontend:
 
      1. Make the code more modular
-     2. Use Appolo client library for GraphQL
+     2. Use Apollo client library for GraphQL
      3. Add better CSS library
 
 ## Architecture Diagram  

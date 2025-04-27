@@ -1,37 +1,24 @@
-﻿namespace ChatHub;
+﻿using System.Collections.Concurrent;
+
+namespace ChatHub;
 
 public class ClientConnectionManager
 {
-    private readonly Dictionary<string, string> _clients = new Dictionary<string, string>();
-    private readonly object _lock = new object();
+    private readonly ConcurrentDictionary<string, string> _clients = new();
 
     public void AddClient(string connectionId, string clientName)
     {
-        lock (_lock)
-        {
-            _clients[connectionId] = clientName;
-        }
 
+        _clients[connectionId] = clientName;
     }
 
     public void RemoveClient(string connectionId)
     {
-        lock (_lock)
-        {
-            if (_clients.TryGetValue(connectionId, out string clientName))
-            {
-                _clients.Remove(connectionId);
-            }
-        }
+        _clients.TryRemove(connectionId, out string _);
     }
 
     public bool TryGetClient(string connectionId, out string clientName)
     {
-        lock (_lock)
-        {
-            return _clients.TryGetValue(connectionId, out clientName);
-        }
+        return _clients.TryGetValue(connectionId, out clientName);
     }
-
-
 }

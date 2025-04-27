@@ -27,6 +27,7 @@ This project showcases my ability to build a real-time chat application by integ
 
 ## Prerequisites  
 - Node.js (v16 or higher)  
+- .net 8 SDK 
 - Docker (for building and deploying images)  
 - (optional) Confluent Cloud account with API keys  
 
@@ -68,7 +69,7 @@ I have added very basic authentication to prevent unauthorized access. This is i
      ```bash
      dotnet run
      ```
-     5. Open [http://localhost:5198/](http://localhost:5198/). You will see `Hello World!`, which demonstrates that the server is running. The WebSocket server is available at [https://localhost:7124/chat-hub](https://localhost:7124/chat-hub).  
+     5. Open [http://localhost:5198/](http://localhost:5198/). You will see `Hello World!`, which demonstrates that the server is running. The WebSocket server is available at [http://localhost:5198/chat-hub](http://localhost:5198/chat-hub).  
 
 4. Frontend App Setup:  
 
@@ -80,17 +81,11 @@ I have added very basic authentication to prevent unauthorized access. This is i
      ```bash
      npm install
      ```
-     3. Configure environment variables:  
-        - Add your Confluent Cloud API keys and AWS credentials to a `.env` file.  
-
-     4. Start the application:  
+     3. Start the application:  
      ```bash
      npm run dev
      ```
-     5. You will be able to access the app in your browser.  
-     6. Note: If you encounter any CORS-related issues, update the `appsettings.json` file on the server side and restart the server.  
-     7. Enter your name and the passphrase (as mentioned above) in the app.  
-     8. Start chatting! You can open multiple windows to test this.  
+     4. You will be able to access the frontend app at the specific local endpoint (e.g., `http://localhost:5173/`).
 
 ## How It Works  
 1. **Producer Server**:  
@@ -150,7 +145,8 @@ If given more time, I plan to:
 2. Frontend:  
      1. Make the code more modular.  
      2. Use the Apollo Client library for GraphQL.  
-     3. Add a better CSS library.  
+     3. Add a better CSS library. 
+     4. Make responsive (for both Desktop and Mobile)
 
 ## Contributing  
 Contributions are welcome! Please follow these steps:  

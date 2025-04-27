@@ -74,8 +74,14 @@ app.UseRouting();
 app.UseCors("ConfiguredCors");
 
 app.UseHealthChecks("/healthy");
-app.MapGraphQL();
+app.MapGraphQL("/graphql");
 
+// Redirect root to GraphQL endpoint
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/graphql");
+    return Task.CompletedTask;
+});
 
 // Force Kafka producer to initialize early (without that the first request will take a long time)
 WarmUpKafkaProducer(app);

@@ -87,13 +87,13 @@ public class ChatMessageService : IChatMessageService
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Kafka send failed for message (ID: {chatMessage.Id})");
+                    _logger.LogError(ex, "Kafka send failed for message (ID: {messageId})", chatMessage.Id);
                 }
             });
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error sending message (ID: {chatMessage.Id}) to Kafka");
+            _logger.LogError(ex, "Error sending message (ID: {messageId}) to Kafka", chatMessage.Id);
         }
     }
 }

@@ -156,3 +156,4 @@ Contributions are welcome! Please follow these steps:
 ## Known Issues  
 - The application does not currently support user authentication.  
 - Frontend styling is minimal and could be improved.
+

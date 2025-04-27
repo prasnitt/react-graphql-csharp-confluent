@@ -21,6 +21,9 @@ This project showcases my ability to build a real-time chat application by integ
 | Frontend App CI/CD  | [![Frontend App CI/CD](https://github.com/prasnitt/JobTracker/actions/workflows/frontend-ci-cd.yml/badge.svg?branch=main)](https://github.com/prasnitt/JobTracker/actions/workflows/frontend-ci-cd.yml) |
 | Backend API CI/CD   | [![React Chat App CI](https://github.com/prasnitt/react-graphql-csharp-confluent/actions/workflows/react-ci.yml/badge.svg?branch=main)](https://github.com/prasnitt/react-graphql-csharp-confluent/actions/workflows/react-ci.yml)   |
 
+### CI/CD Flow
+
+![CI/CD Flow Diagram](screenshots/ChatApp-CI-CD.drawio.png)
 
 ## Architecture Diagram  
 ![Architecture Diagram](screenshots/ArchitectureDiagram.drawio.png)  
@@ -109,7 +112,8 @@ I have added very basic authentication to prevent unauthorized access. This is i
     
     * `AWS Amplify`: For single-page application deployment (CI/CD).  
     * `AWS App Runner`: For GraphQL server and producer (CI/CD via GitHub Actions by deploying Docker images to ECR).  
-    * `EC2`: For the consumer and SignalR-based chat hub (partial CI/CD).  
+    * `EC2`: For the consumer and SignalR-based chat hub (partial CI/CD). 
+    * `Application Load Balancer`: To route the traffic from EC2 
     * `Route 53`: For DNS management.  
     * `Parameter Store`: For securely storing secrets (e.g., Confluent Cloud API keys).  
     

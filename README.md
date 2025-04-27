@@ -12,6 +12,16 @@ This project showcases my ability to build a real-time chat application by integ
          - Subscribes to Confluent Cloud topics and broadcasts messages to all connected clients using SignalR.  
          - Deployed on an AWS EC2 instance.  
 
+
+## CI/CD  
+
+
+| Service   | Build Status                                                                 |
+|-----------|-----------------------------------------------------------------------------|
+| Frontend App CI/CD  | [![Frontend App CI/CD](https://github.com/prasnitt/JobTracker/actions/workflows/frontend-ci-cd.yml/badge.svg?branch=main)](https://github.com/prasnitt/JobTracker/actions/workflows/frontend-ci-cd.yml) |
+| Backend API CI/CD   | [![React Chat App CI](https://github.com/prasnitt/react-graphql-csharp-confluent/actions/workflows/react-ci.yml/badge.svg?branch=main)](https://github.com/prasnitt/react-graphql-csharp-confluent/actions/workflows/react-ci.yml)   |
+
+
 ## Architecture Diagram  
 ![Architecture Diagram](screenshots/ArchitectureDiagram.drawio.png)  
 

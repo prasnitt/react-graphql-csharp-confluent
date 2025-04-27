@@ -27,8 +27,7 @@ This project showcases my ability to build a real-time chat application by integ
 
 ## Prerequisites  
 - Node.js (v16 or higher)  
-- .net 8 SDK 
-- Docker (for building and deploying images)  
+- .NET 8 SDK 
 - (optional) Confluent Cloud account with API keys  
 
 ## Basic Authentication  
